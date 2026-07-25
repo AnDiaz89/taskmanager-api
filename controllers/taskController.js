@@ -6,6 +6,7 @@ async function getTasks(req, res) {
     const tasks = await prisma.task.findMany({
       where: { userId: req.userId },
       orderBy: { createdAt: 'desc' },
+      include: { subtasks: { orderBy: { createdAt: 'asc' } } },
     });
     res.json(tasks);
   } catch (error) {
