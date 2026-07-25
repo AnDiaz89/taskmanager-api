@@ -27,5 +27,15 @@ model Task {
   dueDate     DateTime?
   user        User      @relation(fields: [userId], references: [id])
   userId      Int
+  subtasks    Subtask[]
   createdAt   DateTime  @default(now())
+}
+
+model Subtask {
+  id        Int      @id @default(autoincrement())
+  title     String
+  completed Boolean  @default(false)
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId    Int
+  createdAt DateTime @default(now())
 }
