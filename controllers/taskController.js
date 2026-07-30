@@ -92,4 +92,45 @@ async function deleteTask(req, res) {
   }
 }
 
-module.exports = { getTasks, createTask, updateTask, deleteTask };
+async function getTaskStats(req, res) {
+  try {
+    const tasks = await prisma.task.findMany({
+      where: { userId: req.userId },
+    });
+
+    const total = tasks.length;
+    const completed = tasks.filter((t) => t.completed).length;
+    const pending = total - completed;
+
+    const byPriority = {
+      alta: tasks.filter((t) => t.priority === 'alta').length,
+      media: tasks.filter((t) => t.priority === 'media').length,
+      baja: tasks.filter((t) => t.priority === 'baja').length,
+    };
+
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+
+    const last7Days = [];
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(sevenDaysAgo);
+      day.setDate(day.getDate() + i);
+      const dayStr = day.toISOString().slice(0, 10);
+
+      const count = tasks.filter((t) => t.createdAt.toISOString().slice(0, 10) === dayStr).length;
+
+      last7Days.push({
+        date: day.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' }),
+        tareas: count,
+      });
+    }
+
+    res.json({ total, completed, pending, byPriority, last7Days });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener estadísticas' });
+  }
+}
+
+module.exports = { getTasks, createTask, updateTask, deleteTask, getTaskStats };
