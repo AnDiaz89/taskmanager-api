@@ -8,6 +8,7 @@ const aiRoutes = require('./routes/aiRoutes');
 const subtaskRoutes = require('./routes/subtaskRoutes');
 const pdfRoutes = require('./routes/pdfRoutes');
 const weatherRoutes = require('./routes/weatherRoutes');
+const reminderRoutes = require('./routes/reminderRoutes');
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use('/api/ai', aiRoutes);
 app.use('/api', subtaskRoutes);
 app.use('/api/pdf', pdfRoutes);
 app.use('/api', weatherRoutes);
+app.use('/api', reminderRoutes);
 
 module.exports = app;
