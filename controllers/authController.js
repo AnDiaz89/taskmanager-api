@@ -79,4 +79,20 @@ async function login(req, res) {
   }
 }
 
-module.exports = { register, login };
+async function updateGithubUsername(req, res) {
+  try {
+    const { githubUsername } = req.body;
+
+    const user = await prisma.user.update({
+      where: { id: req.userId },
+      data: { githubUsername: githubUsername || null },
+    });
+
+    res.json({ githubUsername: user.githubUsername });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al actualizar el usuario de GitHub' });
+  }
+}
+
+module.exports = { register, login, updateGithubUsername };

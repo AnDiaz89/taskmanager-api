@@ -9,6 +9,7 @@ const subtaskRoutes = require('./routes/subtaskRoutes');
 const pdfRoutes = require('./routes/pdfRoutes');
 const weatherRoutes = require('./routes/weatherRoutes');
 const reminderRoutes = require('./routes/reminderRoutes');
+const githubRoutes = require('./routes/githubRoutes');
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use('/api', subtaskRoutes);
 app.use('/api/pdf', pdfRoutes);
 app.use('/api', weatherRoutes);
 app.use('/api', reminderRoutes);
+app.use('/api', githubRoutes);
 
 module.exports = app;

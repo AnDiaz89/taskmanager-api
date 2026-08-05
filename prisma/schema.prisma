@@ -11,11 +11,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  tasks     Task[]
-  createdAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  githubUsername String?
+  tasks       Task[]
+  createdAt   DateTime @default(now())
 }
 
 model Task {
