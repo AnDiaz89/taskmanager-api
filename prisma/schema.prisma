@@ -25,6 +25,7 @@ model Task {
   completed   Boolean   @default(false)
   priority    String    @default("media")
   dueDate     DateTime?
+  city        String?
   user        User      @relation(fields: [userId], references: [id])
   userId      Int
   subtasks    Subtask[]
@@ -39,3 +40,4 @@ model Subtask {
   taskId    Int
   createdAt DateTime @default(now())
 }
+

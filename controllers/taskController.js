@@ -17,7 +17,7 @@ async function getTasks(req, res) {
 
 async function createTask(req, res) {
   try {
-    const { title, description, priority, dueDate } = req.body;
+    const { title, description, priority, dueDate, city } = req.body;
 
     if (!title) {
       return res.status(400).json({ error: 'El título es obligatorio' });
@@ -29,6 +29,7 @@ async function createTask(req, res) {
         description,
         priority: priority || 'media',
         dueDate: dueDate ? new Date(dueDate) : null,
+        city: city || null,
         userId: req.userId,
       },
     });
@@ -43,7 +44,7 @@ async function createTask(req, res) {
 async function updateTask(req, res) {
   try {
     const { id } = req.params;
-    const { title, description, completed, priority, dueDate } = req.body;
+    const { title, description, completed, priority, dueDate, city } = req.body;
 
     const existingTask = await prisma.task.findUnique({
       where: { id: parseInt(id) },
@@ -61,6 +62,7 @@ async function updateTask(req, res) {
         completed: completed !== undefined ? completed : existingTask.completed,
         priority: priority !== undefined ? priority : existingTask.priority,
         dueDate: dueDate !== undefined ? (dueDate ? new Date(dueDate) : null) : existingTask.dueDate,
+        city: city !== undefined ? city : existingTask.city,
       },
     });
 
