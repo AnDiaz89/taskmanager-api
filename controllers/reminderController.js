@@ -1,14 +1,8 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendReminder(req, res) {
   try {
@@ -27,8 +21,8 @@ async function sendReminder(req, res) {
       ? new Date(task.dueDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })
       : 'sin fecha límite';
 
-    await transporter.sendMail({
-      from: `"Task Manager" <${process.env.GMAIL_USER}>`,
+    await resend.emails.send({
+      from: 'Task Manager <onboarding@resend.dev>',
       to: task.user.email,
       subject: `Recordatorio: ${task.title}`,
       html: `

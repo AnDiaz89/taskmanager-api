@@ -23,7 +23,8 @@
     "multer": "^2.2.0",
     "nodemailer": "^9.0.4",
     "pdf-parse": "^2.4.5",
-    "prisma": "^5.22.0"
+    "prisma": "^5.22.0",
+    "resend": "^6.18.1"
   },
   "devDependencies": {
     "jest": "^30.4.2",
